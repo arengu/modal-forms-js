@@ -65,13 +65,13 @@ class ModalUI extends BaseView {
 
   show () {
     this.html.classList.add('af-modal-show');
-    EventsFactory.modalHide();
+    EventsFactory.modalShow();
   }
 
   hide () {
     this.html.classList.remove('af-modal-show');
     this._resetContent();
-    EventsFactory.modalShow();
+    EventsFactory.modalHide();
   }
 
   build () {

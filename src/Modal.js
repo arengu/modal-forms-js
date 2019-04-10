@@ -6,6 +6,8 @@ const { includes } = require('./lib/Utilities');
 const MAGIC_SELECTOR = 'data-arengu-modal-form-id';
 const ARENGU_SDK_LOADED = 'af-init';
 
+let isWaitingSdkLoad = false;
+
 class ArenguModal {
 
   constructor () {
@@ -30,8 +32,12 @@ class ArenguModal {
     });
   }
 
-  _waitSdkLoadEventAndEmbedForm () {
-    document.addEventListener(ARENGU_SDK_LOADED, this._embedForm.bind(this));
+  _waitSdkLoadEventAndEmbedForm (formId) {
+    const self = this;
+
+    document.addEventListener(ARENGU_SDK_LOADED, function (e) {
+      self.show(formId)
+    });
   }
 
   _injectModalHtml() {
@@ -40,11 +46,7 @@ class ArenguModal {
   }
 
   _embedForm (formId) {
-    if (window.ArenguForms) {
-      return window.ArenguForms.embed(formId, this.ui.modalBody)
-    } else {
-      this._waitSdkLoadEventAndEmbedForm();
-    }
+    return window.ArenguForms.embed(formId, this.ui.modalBody);
   }
 
   _addTrigger(formId, node) {
@@ -84,8 +86,16 @@ class ArenguModal {
 
     const self = this;
 
-    this._embedForm(formId)
-    .then(() => self.ui.show());
+    if (window.ArenguForms) {
+      return this._embedForm(formId)
+      .then(() => self.ui.show(formId));
+    }
+
+    if (!isWaitingSdkLoad) {
+      isWaitingSdkLoad = true;
+      this._waitSdkLoadEventAndEmbedForm(formId);
+    }
+
   }
 
   hide () {
