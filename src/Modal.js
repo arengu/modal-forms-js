@@ -7,6 +7,7 @@ const MAGIC_SELECTOR = 'data-arengu-modal-form-id';
 const ARENGU_SDK_LOADED = 'af-init';
 
 let isWaitingSdkLoad = false;
+let isRequestingForm = false;
 
 class ArenguModal {
 
@@ -80,15 +81,24 @@ class ArenguModal {
   }
 
   show (formId) {
+    if (isRequestingForm) {
+      return;
+    }
+
     if (!formId) {
       return console.error('Error showing modal, no form ID provided');
     }
 
     const self = this;
 
-    if (window.ArenguForms) {
+    if (window.ArenguForms && !isRequestingForm) {
+      isRequestingForm = true;
+
       return this._embedForm(formId)
-      .then(() => self.ui.show(formId));
+      .then(() => {
+        self.ui.show(formId);
+        isRequestingForm = false;
+      });
     }
 
     if (!isWaitingSdkLoad) {
