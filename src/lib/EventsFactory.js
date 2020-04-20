@@ -16,15 +16,11 @@ class EventsFactory {
   }
 
   static modalShow (formId) {
-    this.triggerEvent(KEYS.MODAL_SHOW, {
-      formId
-    });
+    this.triggerEvent(KEYS.MODAL_SHOW);
   }
 
   static modalHide (formId) {
-    this.triggerEvent(KEYS.MODAL_HIDE, {
-      formId
-    });
+    this.triggerEvent(KEYS.MODAL_HIDE);
   }
 
 }

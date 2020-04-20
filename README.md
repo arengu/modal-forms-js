@@ -28,15 +28,25 @@ You can place **multiple HTML attributes** on the same page, our modal library w
 
 Our modal library has a show method that allows to trigger your modal form on the website.
 
-`show` method example:
+#### Example of usage of `show` method:
 ```javascript
 ArenguModal.show('5073697614331904');
 ```
-The `show` call has the following fields:
 
-| Parameter | Type | Description |
+#### Example of usage of `show` method with hidden fields:
+```javascript
+ArenguModal.show('5073697614331904', {
+  userId: '123456',
+  source: 'anyString'
+});
+```
+
+The `show` call has the following arguments:
+
+| Argument | Type | Description |
 | ------ | ------ | ------ |
 | formId _(required)_| [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | The **Form ID** of your form. You can find it in your form settings or share page. |
+| Hidden fields _(optional)_| [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) | Associative object with initial values for hidden fields |
 
 You can also close the modal form using the `hide` method, this method doesn't require to pass a form ID as our modal flow uses the same tag.
 

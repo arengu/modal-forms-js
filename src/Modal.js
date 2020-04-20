@@ -33,11 +33,11 @@ class ArenguModal {
     });
   }
 
-  _waitSdkLoadEventAndEmbedForm (formId) {
+  _waitSdkLoadEventAndEmbedForm (formId, initValues) {
     const self = this;
 
     document.addEventListener(ARENGU_SDK_LOADED, function (e) {
-      self.show(formId)
+      self.show(formId, initValues)
     });
   }
 
@@ -46,8 +46,8 @@ class ArenguModal {
     document.body.appendChild(node);
   }
 
-  _embedForm (formId) {
-    return window.ArenguForms.embed(formId, this.ui.modalBody);
+  _embedForm (formId, initValues) {
+    return window.ArenguForms.embed(formId, this.ui.modalBody, initValues);
   }
 
   _addTrigger(formId, node) {
@@ -80,7 +80,7 @@ class ArenguModal {
     });
   }
 
-  show (formId) {
+  show (formId, initValues) {
     if (isRequestingForm) {
       return;
     }
@@ -94,7 +94,7 @@ class ArenguModal {
     if (window.ArenguForms && !isRequestingForm) {
       isRequestingForm = true;
 
-      return this._embedForm(formId)
+      return this._embedForm(formId, initValues)
       .then(() => {
         self.ui.show(formId);
         isRequestingForm = false;
@@ -103,7 +103,7 @@ class ArenguModal {
 
     if (!isWaitingSdkLoad) {
       isWaitingSdkLoad = true;
-      this._waitSdkLoadEventAndEmbedForm(formId);
+      this._waitSdkLoadEventAndEmbedForm(formId, initValues);
     }
 
   }
